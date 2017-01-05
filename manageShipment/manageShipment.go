@@ -356,7 +356,9 @@ func (t *ManageShipment) updateShipment(stub shim.ChaincodeStubInterface, args [
 		jsonResp = "{\"Error\":\"Failed to get state for " + shipmentId + "\"}"
 		return nil, errors.New(jsonResp)
 	}
+	
 	tosend := "Shipment ID is " + shipmentId
+	fmt.Println("Setting Event")
 	err = stub.SetEvent("evtsender", []byte(tosend))
 	if err != nil {
 		return nil, err
@@ -370,6 +372,9 @@ func (t *ManageShipment) updateShipment(stub shim.ChaincodeStubInterface, args [
 		fmt.Println("Shipment found with shipmentId : " + shipmentId)
 		fmt.Println(res);
 		res.Status = "Consumed"
+	} else {
+		fmt.Println("Shipment not found ")
+		return nil, errors.New("Shipment not found")
 	}
 	
 	//build the Shipment json string manually
