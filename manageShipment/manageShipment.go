@@ -353,8 +353,8 @@ func (t *ManageShipment) updateShipment(stub shim.ChaincodeStubInterface, args [
 	shipmentId := args[0]
 	ShipmentAsBytes, err := stub.GetState(shipmentId)									//get the Shipment for the specified ShipmentId from chaincode state
 	if err != nil {
-		jsonResp = "{\"Error\":\"Failed to get state for " +  + "\"}"
-		return nil, errors.New(jsonResp)shipmentId
+		jsonResp = "{\"Error\":\"Failed to get state for " + shipmentId + "\"}"
+		return nil, errors.New(jsonResp)
 	}
 	tosend := "Shipment ID is " + shipmentId
 	err = stub.SetEvent("evtsender", []byte(tosend))
