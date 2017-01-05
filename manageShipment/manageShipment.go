@@ -35,6 +35,8 @@ type ManageShipment struct {
 
 var ShipmentIndexStr = "_Shipmentindex"				//name for the key/value that will store a list of all known Shipments
 
+var EVENT_COUNTER = "event_counter"
+
 type Form struct{
 								// Attributes of a Form 
 	FAA_FormNumber string `json:"FAA_formNumber"`	
@@ -101,6 +103,11 @@ func (t *ManageShipment) Init(stub shim.ChaincodeStubInterface, function string,
 	err = stub.PutState(ShipmentIndexStr, jsonAsBytes)
 	if err != nil {
 		return nil, err
+	}
+	
+	err = stub.PutState(EVENT_COUNTER, []byte("1"))
+	if err != nil {
+	     return nil, err
 	}
 	
 	return nil, nil
@@ -346,9 +353,15 @@ func (t *ManageShipment) updateShipment(stub shim.ChaincodeStubInterface, args [
 	shipmentId := args[0]
 	ShipmentAsBytes, err := stub.GetState(shipmentId)									//get the Shipment for the specified ShipmentId from chaincode state
 	if err != nil {
-		jsonResp = "{\"Error\":\"Failed to get state for " + shipmentId + "\"}"
-		return nil, errors.New(jsonResp)
+		jsonResp = "{\"Error\":\"Failed to get state for " +  + "\"}"
+		return nil, errors.New(jsonResp)shipmentId
 	}
+	tosend := "Shipment ID is " + shipmentId
+	err = stub.SetEvent("evtsender", []byte(tosend))
+	if err != nil {
+		return nil, err
+        }	
+	
 	fmt.Print("ShipmentAsBytes in update Shipment")
 	fmt.Println(ShipmentAsBytes);
 	res := Shipment{}
