@@ -533,7 +533,7 @@ func (t *ManageForm) update_Form(stub shim.ChaincodeStubInterface, args []string
         }	
 
 	tosend1 := "form quantity  "+quantity
-	err = stub.SetEvent("errorEvent", []byte(tosend1))
+	err = stub.SetEvent("evtsender", []byte(tosend1))
 	if err != nil {
 		return nil, err
         }	
