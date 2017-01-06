@@ -538,6 +538,9 @@ func (t *ManageForm) update_Form(stub shim.ChaincodeStubInterface, args []string
 		return nil, err
         }	
 	
+	jsonResp = "{\"Error\":\"Some Error for Form " + FAA_formNumber + "\"}"
+	return nil, errors.New(jsonResp)
+	
 	
 	FormAsBytes, err := stub.GetState(FAA_formNumber)									//get the Form for the specified FormId from chaincode state
 	if err != nil {
