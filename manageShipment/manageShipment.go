@@ -373,8 +373,13 @@ func (t *ManageShipment) updateShipment(stub shim.ChaincodeStubInterface, args [
 		fmt.Println(res);
 		res.Status = "Consumed"
 	} else {
+		notFoundMsg := "Shipment not found for ID" +  shipmentId 
 		fmt.Println("Shipment not found ")
-		return nil, errors.New("Shipment not found")
+		err = stub.SetEvent("errorEvent", []byte(notFoundMsg))
+		if err != nil {
+			return nil, err
+		}
+		return nil, nil
 	}
 	
 	//build the Shipment json string manually
