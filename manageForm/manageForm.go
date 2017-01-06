@@ -531,6 +531,13 @@ func (t *ManageForm) update_Form(stub shim.ChaincodeStubInterface, args []string
 	if err != nil {
 		return nil, err
         }	
+
+	tosend1 := "form quantity  "+quantity
+	err = stub.SetEvent("errorEvent", []byte(tosend1))
+	if err != nil {
+		return nil, err
+        }	
+	
 	
 	FormAsBytes, err := stub.GetState(FAA_formNumber)									//get the Form for the specified FormId from chaincode state
 	if err != nil {
